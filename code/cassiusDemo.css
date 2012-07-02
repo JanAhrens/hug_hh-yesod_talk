@@ -1,0 +1,5 @@
+#myid
+  color: #{red}
+  font-size: #{bodyFontSize}
+foo bar baz
+  background-image: url(@{MyBackgroundR})

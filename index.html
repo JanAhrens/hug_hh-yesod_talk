@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html><head><title>Yesod Web Framework</title><meta charset="utf-8"><meta name="author" content="Jan Ahrens"><meta name="viewport" content="width=1024, user-scalable=no"><link rel="stylesheet" href="deck.js/core/deck.core.css"><link rel="stylesheet" href="deck.js/extensions/goto/deck.goto.css"><link rel="stylesheet" href="deck.js/extensions/menu/deck.menu.css"><link rel="stylesheet" href="deck.js/extensions/navigation/deck.navigation.css"><link rel="stylesheet" href="deck.js/extensions/status/deck.status.css"><link rel="stylesheet" href="deck.js/extensions/hash/deck.hash.css"><link rel="stylesheet" href="deck.js/themes/style/web-2.0.css"><link rel="stylesheet" href="deck.js-codemirror/deck.codemirror.css"><link rel="stylesheet" href="deck.js-codemirror/themes/default.css"><script src="deck.js/modernizr.custom.js"></script><style>.cm-s-default pre:before,.cm-s-default pre:after{ box-shadow: none !important; }.cm-s-default > div > div {background-color:white;}.slide blockquote { font-size:1em !important; }.right { text-align:right;}.demo,.center { text-align:center; }.code { display:none; }.demo { margin-top:20% !important; font-size:3em !important; }</style></head><body class="deck-container"><section class="slide"><h2 style="text-align:center;">Yesod Web Framework</h2><img src="images/logo-home2-no-esod.png"><p style="margin-top:35%;">2012-07-12<br /><strong>Haskell User Group Hamburg</strong><br /></strong>Jan Ahrens</p></section><section class="slide"><h2>Agenda</h2><ol><li><h3>Introducing: Yesod and it's principles.</h3></li><li><h3>Shakespeare and Haskell: Type-safe templating.</h3></li><li><h3>Forms: How to handle input.</h3></li><li><h3>Let it fly: Deploy your app</h3></li><li><h3>Conclusion</h3></li></ol></section><section class="slide" id="notPart"><h2>What's <em>not</em> part of this talk</h2><ul><li><h3>Persistence layer</h3></li><li><h3>Internationalization (I18n)</h3></li><li><h3>Consuming APIs</h3></li><li><h3>Other output formats like JSON/XML</h3></li><li><h3>In depth topics like <a href=http://hackage.haskell.org/package/conduit>conduits</a></h3></li><li><h3>Stuff that I've forgotten ;-)</h3></li></ul><p class="right"><a href="#" onclick="javascript:$.deck('go', 'end');">&rArr;</a></p></section><section class="slide"><h2>Introducing: Yesod</h2><ul><li><h3>Fast, robust web applications with Haskell</h3></li><li><h3>Created by Michael Snoyman. <a href="https://github.com/yesodweb/yesod/commit/4ad1b2956e0846c4b76839b5279d21bf2d97f48a">Initial commit</a> in 2009</h3><ul><li><h4>Version 1.0 <a href="http://www.yesodweb.com/blog/2012/04/announcing-yesod-1-0">released</a> in 2012</h4></li><li><h4>Current version <a href=https://groups.google.com/group/yesodweb/msg/34b3870f05dd15aa>1.0.5</a></h4></li></ul></li><li><h3>Open Source (MIT license); actively developed on GitHub</h3></li></ul></section><section class="slide" id="helloWorld"><h2>Hello World!</h2><div><div class="code" name="code" mode="haskell">{-# LANGUAGE TemplateHaskell, QuasiQuotes,
+             MultiParamTypeClasses, TypeFamilies #-}
+import Yesod
+
+data HelloWorld = HelloWorld
+
+instance Yesod HelloWorld
+
+mkYesod &quot;HelloWorld&quot; [parseRoutes|
+/ HomeR GET
+|]
+
+getHomeR :: Handler RepHtml
+getHomeR = defaultLayout [whamlet|Hello World!|]
+
+main :: IO ()
+main = warpDebug 3000 HelloWorld</div></div><p class="right"><a href="code/helloWorld.hs">helloWorld.hs</a></p><p class="right"><a href="#" onclick="javascript:$.deck('go', 'helloWithoutTH');">&rArr;</a></p></section><section class="slide"><h2>Principles of Yesod</h2><ul><li><h3>Type safety</h3><blockquote><p>If your application compiles, it works</p><p><cite><a href=http://www.haskell.org/haskellwiki/Web/Frameworks>HaskellWiki</a></cite></p></blockquote></li><li><h3>Performance</h3></li><li><h3>Easy development cycle</h3></li><li><h3>No need to be a Haskell expert</h3><p>Yesod hides the (ugly) details of the type-system as good as possible.</p></li></ul></section><section class="slide"><h2>Dependencies of Yesod</h2><img src="images/yesod-dependencies.png"></section><section class="slide"><h2>The <code>yesod</code> command</h2><ul><li><h3>Dependencies</h3><p><code>$ cabal install yesod-platform-1.0.5</code></p></li><li><h3>Scaffold a new Yesod site</h3><p><code>$ yesod init</code></p></li><li><h3>Development</h3><p><code>$ yesod devel</code> and <code>$ yesod test</code></p><p>recompiles on every file change</p></li><li><h3>Future: Yesod 1.1</h3></h3><code>add-handler</code> and <code>keter</code></li></ul></section><section class="slide"><h2>The scaffold site</h2><h4 class="demo">Demo</h4></section><section class="slide"><h2>Shakespeare and Haskell</h2><ul><li><h3>Family of domain specific languages</h3><p>Hamlet, Casius, Lucius and Julius</p></li><li><h3>Type-safe templating for HTML, CSS and JavaScript</h3><p>Syntax check, type-safe routes</p></li><li><h3>Goal: Don't manipulate the underlying language too much</h3></li></ul></section><section class="slide"><h2>Hamlet for HTML</h2><textarea class="code" type="text/html" mode="text/html">$doctype 5
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;#{pageTitle} - My Site
+    &lt;link rel=stylesheet href=@{Stylesheet}&gt;
+  &lt;body&gt;
+    &lt;h1.page-title&gt;#{pageTitle}
+    &lt;p&gt;Here is a list of your friends:
+    $if null friends
+      &lt;p&gt;Sorry, I lied, you don&#39;t have any friends.
+    $else
+      &lt;ul&gt;
+        $forall Friend name age &lt;- friends
+          &lt;li&gt;#{name} (#{age} years old)
+    &lt;footer&gt;^{copyright}</textarea><p class="right"><a href="code/hamletDemo.hamlet">hamletDemo.hamlet</a></p><ul><li>Similar to <a href="https://github.com/haml/haml">Haml</a> for Ruby</li><li>String interpolation: <code>#&#123;stringValue&#125;</code>, <code>@&#123;RouteValue&#125;</code>, <code>^&#123;widgetValue&#125;</code></li><li>Support for conditionals, Maybe handling, Lists, Pattern matching</li></ul></section><section class="slide"><h2 style="margin-bottom:10px;">The other DSLs</h2><h5>CSS with <strong>Casius</strong></h5><textarea class="code" mode="css">#myid
+  color: #{red}
+  font-size: #{bodyFontSize}
+foo bar baz
+  background-image: url(@{MyBackgroundR})</textarea><h5><strong>Lucius</strong>: alternative CSS syntax</h5><textarea class="code" mode="css">section.blog {
+  padding: 1em;
+  border: 1px solid #000;
+  h1 {
+    color: #{headingColor};
+  }
+}</textarea><h5><strong>Julius</strong> for JavaScript</h5><textarea class="code" mode="javascript">$(function(){
+  $(&quot;section.#{sectionClass}&quot;).hide();
+  $(&quot;#mybutton&quot;).click(function(){
+    document.location = &quot;@{SomeRouteR}&quot;;
+  });
+  ^{addBling}
+});</textarea></section><section class="slide"><h2>Input with yesod-form</h2><ul><li><h3>Problems:</h3><ul><li><h4>Render form as HTML</h4></li><li><h4>Get and validate from data</h4></li><li><h4>Display errors</h4></li></ul></li><li><h3>Encourages the <a href="http://en.wikipedia.org/wiki/Post/Redirect/Get">Post/Redirect/Get (PRG)</a> pattern</h3></li></ul></section><section class="slide"><h2>Taking notes</h2><div><div class="code" name="code" mode="haskell">data Note = Note
+    { noteDate    :: Data.Time.Day
+    , noteAuthor  :: Maybe Data.Text.Text
+    , noteContent :: Yesod.Form.Fields.Textarea
+    }
+  deriving Show</div></div><p><code>note</code> prefix: Naming convention to not pollute the module namespace</p><div><div class="code" name="code" mode="haskell">sampleNote :: Note
+sampleNote = Note (ModifiedJulianDay 56111)
+                  (Just &quot;Jan&quot;)
+                  (Textarea &quot;Finish the slides!&quot;)</div></div><p><code>OverloadedStrings</code> language extension needs to be enabled</p></section><section class="slide"><h2>"To Monad or not to Monad"</h2><ul><li><h3>AForm: applicative style form</h3><p><em>Simple</em> way to build forms</p></li><li><h3>MForm: monadic form</h3><p><em>Flexible</em> and <em>verbose</em> way to build forms</p></li><li><h3>In the end every form is a MForm</h3><p><code>renderDivs</code>, <code>renderTable</code> or <code>renderBootstrap</code> </code>convert an <code>AForm</code> into a <code>MForm</code></p><textarea class="code" mode="haskell">type FormRender sub master a =
+       AForm sub master a
+    -&gt; Markup
+    -&gt; MForm sub master (FormResult a, Widget)</textarea></li></ul></section><section class="slide" id="aform"><h2>Modelling the form</h2><textarea class="code" mode="haskell">noteForm :: Html
+         -> MForm HelloForm HelloForm (FormResult Note, Widget)
+noteForm = renderDivs $
+  Note <$> areq (jqueryDayField def)       "Date"   Nothing
+       <*> aopt textField                  "Author" Nothing
+       <*> areq (checkTextareaLength 1 10) "Note"   Nothing
+  where
+    checkTextareaLength lower upper
+      = check (checkLength lower upper) textareaField
+
+    checkLength :: Int -> Int -> Textarea
+                -> Either Text Textarea
+    checkLength l u ta | taLen ta >= l &&
+                         taLen ta <= u = Right ta
+                       | otherwise     = Left "Note too long"
+
+    taLen ta = Data.Text.length . unTextarea $ ta</textarea><ul><li><code>areq</code> for required fields</li><li><code>aopt</code> for optional fields</li><li>In other frameworks, such as Ruby on Rails, this function is a model</li></ul><p class="right"><a href="#" onclick="javascript:$.deck('go', 'mform');">&rArr;</a></p></section><section class="slide"><h2>Displaying the form</h2><textarea class="code" mode="haskell">getRootR :: Handler RepHtml
+getRootR = do
+  (formFields, enctype) <- generateFormPost noteForm
+  renderForm formFields enctype
+
+  where
+    renderForm fields enctype = defaultLayout [whamlet|
+      <form method=POST action=@{NoteR} enctype=#{enctype}>
+        ^{fields}
+          <input type=submit>
+    |]</textarea><h6>Result</h6><textarea class="code" mode="text/html"><form method="POST" action="/note"
+      enctype="application/x-www-form-urlencoded">
+  <!-- Cross-site request forgery (CSRF) protection -->
+  <input type="hidden" name="_token" value="ffj7Odx30w">
+  <div class="required">
+    <label for="h2">Date</label>
+    <input id="h2" name="h2" class="hasDatepicker" type="date"
+           value="" required="">
+  </div>
+  <div class="optional"><!-- [...] --></div>
+  <div class="required"><!-- [...] --></div>
+  <input type="submit">
+</form></textarea></section><section class="slide"><h2>Processing the input</h2><textarea class="code" mode="haskell">postNoteR :: Handler RepHtml
+postNoteR = do
+  ((result, formFields), enctype) <- runFormPost noteForm
+
+  case result of
+    FormSuccess note -> do
+                          setMessage "Note created"
+                          redirect RootR
+    FormMissing      -> renderForm formFields enctype
+    FormFailure _    -> renderForm formFields enctype
+
+  where
+    renderForm fields enctype = defaultLayout [whamlet|
+      <form method=POST action=@{NoteR} enctype=#{enctype}>
+        ^{fields}
+        <input type=submit>
+    |]</textarea></section><section class="slide"><h2>The note-taking form in action</h2><h4 class="demo">Demo</h4></section><section class="slide"><h2>Let it fly: Deploy your app</h2><ul><li><h3>Choose what WAI backend is the best</h3><p>Standalone web server with <code>warp</code> or <code>FastCGI</code> interface</p></li><li><h3>Create the binary</h3><code>$ cabal clean && cabal configure && cabal build</code></li><li><h3>Large, dynamic linked binary gets created</h3><ul><li>The binary for the Yesod scaffold site is <strong>48 Megabits</strong> large</li><li>Hamlet, Lucius, Cassius and Julius templates are part of binary.</li><li>Configurations can be adjusted with YAML configuration.</li></ul></li></ul></section><section class="slide"><h2>Ship it</h2><ul><li><h3>Upload binary</h3><p>Either use reverse proxy, direct connection or CGI interface</p></li><li><h3>To "the cloud" with Heroku</h3><p>Yesod applications can be deployed to Heroku. <code>heroku</code> package helps with reading the relevant environment variables</code></p></li><li><h3>Beware of shared library issues</h3><ul><li>Get a build environment that is almost equivalent to your production setup</li><li>Virtual machines are a good fit</li></ul></li></ul></section><section class="slide"><h2>Conclusion</h2><ul><li><h3>Yesod has a lot of dependencies</h3><p>Using the <code>yesod-platform</code> package can help</p></li><li><h3>Various language extensions are required</h3><p>When using the scaffolding site it's not a huge problem</p></li><li><h3>String handling can be tedious</h3><p><code>String</code>, <code>ByteString</code>, <code>Text</code></p></li><li><h3>Productive framework</h3><p>Active community and fast progressing development</p></li></ul></section><section class="slide" id="end"><h2>Thanks</h2><h3 class="center" style="margin-bottom:30px;">Questions and discussion</h3><span class="slide"><h4>Sources and further read</h4><ul><li><a href="http://shop.oreilly.com/product/0636920023142.do">Deploying Web Applications with Haskell and Yesod </a>by Michael Snoyman (also <a href=http://www.yesodweb.com/book>online</a>)</li><li>The official Yesod <a href=http://yesodweb.com/blog>blog</li><li><a href="http://qconsf.com/dl/qcon-sanfran-2011/slides/MichaelSnoyman_YesodAFunctionalTypeSafeWebFramework.pdf">Michael Snoyman, Yesod Web Framework, QCon San Francisco 2011</a></li><li>My blog post about <a href="https://github.com/JanAhrens/blog/blob/master/2012-07-05_yesod-deployment.markdown">Deploying Yesod to Heroku</a></li><li> <a href="#" onclick="javascript:$.deck('go', 'notPart');">&lArr; What's <em>not</em> part of this talk</a></li></ul></span></section><section class="slide"><h2>Bonus slides</h2><ul><li><a href="#" onclick="javascript:$.deck('go', 'helloWithoutTH');">Yesod without Template Haskell (TH)</a></li><li><a href="#" onclick="javascript:$.deck('go', 'mform');">Note example with <code>MForm</code></a></li></ul></section><section class="slide" id="helloWithoutTH"><h2>Yesod without Template Haskell (TH)</h2><p><a href=# onclick="javascript:$.deck('go', 'helloWorld');">&lArr; HelloWorld with TH</a></p><textarea class="code" mode="haskell">{-# LANGUAGE MultiParamTypeClasses, TypeFamilies #-}
+import Yesod
+import Yesod.Routes.Dispatch (toDispatch, Route(..))
+import Text.Blaze.Internal (preEscapedText)
+import Data.Text (pack)
+import Data.Map (fromList, lookup)
+
+data HelloWorld = HelloWorld
+
+instance Yesod HelloWorld
+
+instance RenderRoute HelloWorld where
+  data Route HelloWorld = HomeR deriving (Show, Eq, Read)
+  renderRoute HomeR = ([], [])
+
+type Handler = GHandler HelloWorld HelloWorld
+type Widget  = GWidget  HelloWorld HelloWorld ()
+
+instance YesodDispatch HelloWorld HelloWorld where
+  yesodDispatch master sub toMaster app404 handler405
+                method pieces
+    = case dispatch pieces of
+        Just f  -> f master sub toMaster app404
+                     handler405 method
+        Nothing -> app404
+    where
+      dispatch = toDispatch [Route [] False onHome]
+      onHome [] =
+        Just $ \ master sub toMaster _ _handler405 _method ->
+          case Data.Map.lookup _method methodsHomeR of
+            Just f  -> yesodRunner f master sub
+                                   (Just HomeR) toMaster
+            Nothing -> _handler405 HomeR
+      methodsHomeR = fromList [(pack "GET", fmap chooseRep
+                                                 getHomeR)]
+
+getHomeR :: Handler RepHtml
+getHomeR = defaultLayout
+  (toWidget . preEscapedText . pack $ "Hello World!")
+
+main :: IO ()
+main = warpDebug 3000 HelloWorld</textarea><p class="right"><a href="code/helloWithoutTH.hs">helloWithoutTH.hs</a></p></section><section class="slide" id="mform"><h2>Note example with <code>MForm</code></h2><p><a href=# onclick="javascript:$.deck('go', 'aform');">&lArr; Modelling the form</a></p><textarea class="code" mode="haskell">noteForm' :: Html
+          -> MForm HelloForm HelloForm (FormResult Note, Widget)
+noteForm' extra = do
+  (dateRes, dateView) <- mreq (jqueryDayField def) "" Nothing
+  (authorRes, authorView) <- mopt textField "" Nothing
+  (contentRes, contentView) <- mreq (checkTextareaLength 1 10) "" Nothing
+
+  let noteRes = Note <$> dateRes <*> authorRes <*> contentRes
+
+  let widget = do
+      toWidget [lucius|
+        ##{fvId dateView} {
+          width: 3em;
+        }
+      |]
+
+      [whamlet|
+        #{extra}
+        <p>
+          On ^{fvInput dateView}, ^{fvInput authorView} write:
+        <p>
+          ^{fvInput contentView}
+      |]
+
+  return (noteRes, widget)
+
+  where
+    checkTextareaLength lower upper
+      = check (checkLength lower upper) textareaField
+
+    checkLength :: Int -> Int -> Textarea
+                -> Either Text Textarea
+    checkLength l u ta | taLen ta >= l &&
+                         taLen ta <= u = Right ta
+                       | otherwise     = Left "Note too long"
+
+    taLen ta = Data.Text.length . unTextarea $ ta</textarea></section><a class="deck-prev-link" href="#" title="Previous">&#8592;</a><a class="deck-next-link" href="#" title="Next">&#8594;</a><p class="deck-status"><span class="deck-status-current"></span>/<span class="deck-status-total"></span></p><form class="goto-form" action="." method="get"><label for="goto-slide">Go to slide:</label><input type="number" name="slidenum" id="goto-slide"><input type="submit" value="Go"></form><a class="deck-permalink" href="." title="Permalink to this slide"></a><script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js"></script><script>window.jQuery || document.write('<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.1.min.js">\x3C/script>')</script><script src="deck.js/core/deck.core.js"></script><script src="deck.js/extensions/menu/deck.menu.js"></script><script src="deck.js/extensions/goto/deck.goto.js"></script><script src="deck.js/extensions/status/deck.status.js"></script><script src="deck.js/extensions/navigation/deck.navigation.js"></script><script src="deck.js/extensions/hash/deck.hash.js"></script><script src="deck.js-codemirror/codemirror.js"></script><script src="deck.js-codemirror/mode/javascript/javascript.js"></script><script src="deck.js-codemirror/mode/xml/xml.js"></script><script src="deck.js-codemirror/mode/css/css.js"></script><script src="deck.js-codemirror/mode/htmlmixed/htmlmixed.js"></script><script src="deck.js-codemirror/mode/haskell/haskell.js"></script><script src="deck.js-codemirror/deck.codemirror.js"></script><script src="introduction.js"></script></body></html>

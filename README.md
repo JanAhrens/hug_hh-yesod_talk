@@ -1,8 +1,8 @@
-Slides for my talk at the Hamburg Haskell User Group about Yesod.
+Slides for my Yesod talk at the Hamburg Haskell User Group.
 
-Currently, this talk is a work in progress.
+It's about Yesod 1.0.5. You can view it on it's [GitHub page](http://janahrens.github.com/hug_hh-yesod_talk).
 
-= Credits
+# Credits
 
 * I'm using deck.js for this
 * deck.js-coremirror helps with syntax highlighting

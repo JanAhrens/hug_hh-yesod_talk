@@ -1,0 +1,13 @@
+<form method="POST" action="/note"
+      enctype="application/x-www-form-urlencoded">
+  <!-- Cross-site request forgery (CSRF) protection -->
+  <input type="hidden" name="_token" value="ffj7Odx30w">
+  <div class="required">
+    <label for="h2">Date</label>
+    <input id="h2" name="h2" class="hasDatepicker" type="date"
+           value="" required="">
+  </div>
+  <div class="optional"><!-- [...] --></div>
+  <div class="required"><!-- [...] --></div>
+  <input type="submit">
+</form>

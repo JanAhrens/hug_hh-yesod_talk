@@ -1,0 +1,382 @@
+$doctype 5
+<html>
+  <head>
+    <title>Yesod Web Framework
+
+    <meta charset=utf-8>
+    <meta name=author content="Jan Ahrens">
+    <meta name=viewport content="width=1024, user-scalable=no">
+
+    <!-- Core and extension CSS files -->
+    <link rel=stylesheet href="deck.js/core/deck.core.css">
+    <link rel=stylesheet href="deck.js/extensions/goto/deck.goto.css">
+    <link rel=stylesheet href="deck.js/extensions/menu/deck.menu.css">
+    <link rel=stylesheet href="deck.js/extensions/navigation/deck.navigation.css">
+    <link rel=stylesheet href="deck.js/extensions/status/deck.status.css">
+    <link rel=stylesheet href="deck.js/extensions/hash/deck.hash.css">
+
+    <!-- Style theme. More available in /themes/style/ or create your own. -->
+    <link rel=stylesheet href="deck.js/themes/style/web-2.0.css">
+
+    <!-- include code mirror default css and the theme you want. -->
+    <link rel=stylesheet href="deck.js-codemirror/deck.codemirror.css">
+    <link rel=stylesheet href="deck.js-codemirror/themes/default.css">
+
+    <!-- Theme CSS files (menu swaps these out) -->
+    <!-- link #transition-theme-link rel=stylesheet href="deck.js/themes/transition/horizontal-slide.css" -->
+
+    <script src="deck.js/modernizr.custom.js">
+    <style>
+      .cm-s-default pre:before,
+      .cm-s-default pre:after
+          { box-shadow: none !important; }
+      .cm-s-default > div > div {background-color:white;}
+      .slide blockquote { font-size:1em !important; }
+      .right { text-align:right;}
+      .demo,
+      .center { text-align:center; }
+      .code { display:none; }
+      .demo { margin-top:20% !important; font-size:3em !important; }
+
+  <body.deck-container>
+      <section.slide>
+        <h2 style="text-align:center;">Yesod Web Framework
+        <img src="images/logo-home2-no-esod.png">
+        <p style="margin-top:35%;">
+          2012-07-12<br />
+          <strong>Haskell User Group Hamburg</strong><br />
+          Jan Ahrens
+
+      <section.slide>
+        <h2>Agenda
+        <ol>
+          <li>
+            <h3>Introducing: Yesod and it's principles.
+          <li>
+            <h3>Shakespeare and Haskell: Type-safe templating.
+          <li>
+            <h3>Forms: How to handle input.
+          <li>
+            <h3>Let it fly: Deploy your app
+          <li>
+            <h3>Conclusion
+
+      <section.slide #notPart>
+        <h2>What's <em>not</em> part of this talk
+        <ul>
+          <li>
+            <h3>Persistence layer
+          <li>
+            <h3>Internationalization (I18n)
+          <li>
+            <h3>Consuming APIs
+          <li>
+            <h3>Other output formats like JSON/XML
+          <li>
+            <h3>In depth topics like <a href=http://hackage.haskell.org/package/conduit>conduits</a>
+          <li>
+            <h3>Stuff that I've forgotten ;-)
+        <p.right>
+          <a href=# onclick="javascript:$.deck('go', 'end');">&rArr;
+
+      <section.slide>
+        <h2>Introducing: Yesod
+        <ul>
+          <li>
+            <h3>
+              Fast, robust web applications with Haskell
+          <li>
+            <h3>
+              Created by Michael Snoyman. #
+              <a href="https://github.com/yesodweb/yesod/commit/4ad1b2956e0846c4b76839b5279d21bf2d97f48a">Initial commit
+              \ in 2009
+            <ul>
+              <li><h4>Version 1.0 <a href="http://www.yesodweb.com/blog/2012/04/announcing-yesod-1-0">released</a> in 2012</h4>
+              <li><h4>Current version <a href=https://groups.google.com/group/yesodweb/msg/34b3870f05dd15aa>1.0.5</a></h4>
+          <li>
+            <h3>Open Source (MIT license); actively developed on GitHub
+
+      <section.slide #helloWorld>
+        <h2>Hello World!
+        <div>
+          <div.code name=code mode=haskell>#{helloWorld}
+        <p.right>
+          <a href="code/helloWorld.hs">helloWorld.hs
+        <p.right>
+          <a href=# onclick="javascript:$.deck('go', 'helloWithoutTH');">&rArr;
+
+      <section.slide>
+        <h2>Principles of Yesod
+        <ul>
+          <li>
+            <h3>Type safety
+            <blockquote>
+              <p>If your application compiles, it works
+              <p>
+                <cite><a href=http://www.haskell.org/haskellwiki/Web/Frameworks>HaskellWiki</a>
+          <li>
+            <h3>Performance
+          <li>
+            <h3>Easy development cycle
+          <li>
+            <h3>No need to be a Haskell expert
+            <p>Yesod hides the (ugly) details of the type-system as good as possible.
+
+      <section.slide>
+        <h2>Dependencies of Yesod
+        <img src="images/yesod-dependencies.png">
+
+      <section.slide>
+        <h2>The <code>yesod</code> command
+        <ul>
+          <li>
+            <h3>Dependencies
+            <p>
+              <code>$ cabal install yesod-platform-1.0.5
+          <li>
+            <h3>Scaffold a new Yesod site
+            <p>
+              <code>$ yesod init
+          <li>
+            <h3>Development
+            <p>
+              <code>$ yesod devel
+              \ and #
+              <code>$ yesod test
+            <p>recompiles on every file change
+          <li>
+            <h3>Future: Yesod 1.1</h3>
+            <code>add-handler
+            \ and #
+            <code>keter
+
+      <section.slide>
+        <h2>The scaffold site
+        <h4.demo>Demo
+
+      <section.slide>
+        <h2>Shakespeare and Haskell
+        <ul>
+          <li>
+            <h3>Family of domain specific languages
+            <p>Hamlet, Casius, Lucius and Julius
+          <li>
+            <h3>Type-safe templating for HTML, CSS and JavaScript
+            <p>Syntax check, type-safe routes
+          <li>
+            <h3>Goal: Don't manipulate the underlying language too much
+
+      <section.slide>
+        <h2>Hamlet for HTML
+        <textarea.code type="text/html" mode="text/html">#{hamletDemo}
+        <p.right>
+          <a href="code/hamletDemo.hamlet">hamletDemo.hamlet
+        <ul>
+          <li>Similar to <a href="https://github.com/haml/haml">Haml</a> for Ruby
+          <li>String interpolation: <code>#&#123;stringValue&#125;</code>, <code>@&#123;RouteValue&#125;</code>, <code>^&#123;widgetValue&#125;</code>
+          <li>Support for conditionals, Maybe handling, Lists, Pattern matching
+
+      <section.slide>
+        <h2 style="margin-bottom:10px;">The other DSLs
+        <h5>CSS with <strong>Casius</strong>
+        <textarea.code mode=css>#{cassiusDemo}
+        <h5><strong>Lucius</strong>: alternative CSS syntax
+        <textarea.code mode=css>#{luciusDemo}
+        <h5><strong>Julius</strong> for JavaScript
+        <textarea.code mode=javascript>#{juliusDemo}
+
+      <section.slide>
+        <h2>Input with yesod-form
+        <ul>
+          <li>
+            <h3>Problems:
+            <ul>
+              <li><h4>Render form as HTML</h4>
+              <li><h4>Get and validate from data</h4>
+              <li><h4>Display errors</h4>
+          <li>
+            <h3>Encourages the <a href="http://en.wikipedia.org/wiki/Post/Redirect/Get">Post/Redirect/Get (PRG)</a> pattern
+
+      <section.slide>
+        <h2>Taking notes
+        <div>
+          <div.code name=code mode=haskell>#{noteFormData}
+        <p><code>note</code> prefix: Naming convention to not pollute the module namespace
+
+        <div>
+          <div.code name=code mode=haskell>#{noteFormValue}
+        <p><code>OverloadedStrings</code> language extension needs to be enabled
+
+      <section.slide>
+        <h2>"To Monad or not to Monad"
+        <ul>
+          <li>
+            <h3>AForm: applicative style form
+            <p><em>Simple</em> way to build forms
+          <li>
+            <h3>MForm: monadic form
+            <p><em>Flexible</em> and <em>verbose</em> way to build forms
+          <li>
+            <h3>In the end every form is a MForm
+            <p>
+              <code>renderDivs</code>, <code>renderTable</code> or <code>renderBootstrap</code> #
+              convert an <code>AForm</code> into a <code>MForm</code>
+            <textarea.code mode=haskell>#{renderDivsSignature}
+
+      <section.slide #aform>
+        <h2>Modelling the form
+        <textarea.code mode=haskell>#{preEscapedToMarkup noteFormAForm}
+        <ul>
+          <li><code>areq</code> for required fields
+          <li><code>aopt</code> for optional fields
+          <li>In other frameworks, such as Ruby on Rails, this function is a model
+        <p.right>
+          <a href=# onclick="javascript:$.deck('go', 'mform');">&rArr;
+
+      <section.slide>
+        <h2>Displaying the form
+        <textarea.code mode=haskell>#{preEscapedToMarkup noteFormRender}
+        <h6>Result
+        <textarea.code mode=text/html>#{preEscapedToMarkup noteFormRenderResult}
+
+      <section.slide>
+        <h2>Processing the input
+        <textarea.code mode=haskell>#{preEscapedToMarkup noteFormProcess}
+
+      <section.slide>
+        <h2>The note-taking form in action
+        <h4.demo>Demo
+
+      <section.slide>
+        <h2>Let it fly: Deploy your app
+        <ul>
+          <li>
+            <h3>Choose what WAI backend is the best
+            <p>
+              Standalone web server with <code>warp</code> or <code>FastCGI</code> interface
+          <li>
+            <h3>Create the binary
+            <code>$ cabal clean && cabal configure && cabal build
+          <li>
+            <h3>Large, dynamic linked binary gets created
+            <ul>
+              <li>The binary for the Yesod scaffold site is <strong>48 Megabits</strong> large
+              <li>Hamlet, Lucius, Cassius and Julius templates are part of binary.
+              <li>Configurations can be adjusted with YAML configuration.
+
+      <section.slide>
+        <h2>Ship it
+        <ul>
+          <li>
+            <h3>Upload binary
+            <p>Either use reverse proxy, direct connection or CGI interface
+          <li>
+            <h3>To "the cloud" with Heroku
+            <p>
+              Yesod applications can be deployed to Heroku. #
+              <code>heroku</code> package helps with reading the relevant environment variables
+          <li>
+            <h3>Beware of shared library issues
+            <ul>
+              <li>Get a build environment that is almost equivalent to your production setup
+              <li>Virtual machines are a good fit
+
+      <section.slide>
+        <h2>Conclusion
+        <ul>
+          <li>
+            <h3>Yesod has a lot of dependencies
+            <p>Using the <code>yesod-platform</code> package can help
+          <li>
+            <h3>Various language extensions are required
+            <p>When using the scaffolding site it's not a huge problem
+          <li>
+            <h3>String handling can be tedious
+            <p><code>String</code>, <code>ByteString</code>, <code>Text</code>
+          <li>
+            <h3>Productive framework
+            <p>Active community and fast progressing development
+
+      <section.slide #end>
+        <h2>Thanks
+        <h3.center style="margin-bottom:30px;">Questions and discussion
+        <span.slide>
+          <h4>Sources and further read
+          <ul>
+            <li>
+              <a href=http://shop.oreilly.com/product/0636920023142.do>Deploying Web Applications with Haskell and Yesod #
+              by Michael Snoyman (also <a href=http://www.yesodweb.com/book>online</a>)
+            <li>
+              The official Yesod <a href=http://yesodweb.com/blog>blog
+            <li>
+              <a href=http://qconsf.com/dl/qcon-sanfran-2011/slides/MichaelSnoyman_YesodAFunctionalTypeSafeWebFramework.pdf>
+                Michael Snoyman, Yesod Web Framework, QCon San Francisco 2011
+            <li>
+              My blog post about #
+              <a href=https://github.com/JanAhrens/blog/blob/master/2012-07-05_yesod-deployment.markdown>Deploying Yesod to Heroku
+            <li> 
+              <a href=# onclick="javascript:$.deck('go', 'notPart');">&lArr; What's <em>not</em> part of this talk
+
+      <section.slide>
+        <h2>Bonus slides
+        <ul>
+          <li>
+            <a href=# onclick="javascript:$.deck('go', 'helloWithoutTH');">Yesod without Template Haskell (TH)
+          <li>
+            <a href=# onclick="javascript:$.deck('go', 'mform');">Note example with <code>MForm</code>
+
+      <section.slide #helloWithoutTH>
+        <h2>Yesod without Template Haskell (TH)
+        <p><a href=# onclick="javascript:$.deck('go', 'helloWorld');">&lArr; HelloWorld with TH</a>
+        <textarea.code mode=haskell>#{preEscapedToMarkup helloWithoutTH}
+        <p.right>
+          <a href="code/helloWithoutTH.hs">helloWithoutTH.hs
+
+      <section.slide #mform>
+        <h2>Note example with <code>MForm</code>
+        <p><a href=# onclick="javascript:$.deck('go', 'aform');">&lArr; Modelling the form</a>
+        <textarea.code mode=haskell>#{preEscapedToMarkup noteFormWithMForm}
+
+      <a.deck-prev-link href=# title=Previous>&#8592;
+      <a.deck-next-link href=# title=Next>&#8594;
+
+      <p.deck-status>
+        <span.deck-status-current>
+        /
+        <span.deck-status-total>
+
+      <form.goto-form action=. method=get>
+        <label for=goto-slide>Go to slide:
+        <input type=number name=slidenum #goto-slide>
+        <input type=submit value=Go>
+
+      <a.deck-permalink href=. title="Permalink to this slide">#
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js">
+    <script>window.jQuery || document.write('<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.1.min.js">\x3C/script>')
+
+    <!-- Deck Core and extensions -->
+    <script src="deck.js/core/deck.core.js">
+    <script src="deck.js/extensions/menu/deck.menu.js">
+    <script src="deck.js/extensions/goto/deck.goto.js">
+    <script src="deck.js/extensions/status/deck.status.js">
+    <script src="deck.js/extensions/navigation/deck.navigation.js">
+    <script src="deck.js/extensions/hash/deck.hash.js">
+
+    <!-- include the base codemirror code. -->
+    <script src="deck.js-codemirror/codemirror.js">
+
+    <!-- include the code syntax you want to highlight -->
+    <!-- javascript -->
+    <script src="deck.js-codemirror/mode/javascript/javascript.js">
+
+    <!-- html mode : note code miror requires xml, css and javasript modes for html rendering -->
+    <script src="deck.js-codemirror/mode/xml/xml.js">
+    <script src="deck.js-codemirror/mode/css/css.js">
+    <script src="deck.js-codemirror/mode/htmlmixed/htmlmixed.js">
+    <script src="deck.js-codemirror/mode/haskell/haskell.js">
+
+    <script src="deck.js-codemirror/deck.codemirror.js">
+
+    <!-- Stuff specific to this page -->
+    <script src="introduction.js">
