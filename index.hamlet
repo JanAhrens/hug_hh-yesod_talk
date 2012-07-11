@@ -297,20 +297,23 @@ $doctype 5
             <h3>Productive framework
             <p>Active community and fast progressing development
 
-      <section.slide #end>
+      <section.slide>
         <h2>Thanks
-        <h3.center style="margin-bottom:30px;">Questions and discussion
-        <span.slide>
+        <h3.center style="margin-bottom:40px;">Questions and discussion
+        <span.slide #end>
           <h4>Sources and further read
           <ul>
             <li>
-              <a href=http://shop.oreilly.com/product/0636920023142.do>Deploying Web Applications with Haskell and Yesod #
+              <a href=http://shop.oreilly.com/product/0636920023142.do>Developing Web Applications with Haskell and Yesod (Safety-driven Web Development) #
               by Michael Snoyman (also <a href=http://www.yesodweb.com/book>online</a>)
             <li>
               The official Yesod <a href=http://yesodweb.com/blog>blog
             <li>
               <a href=http://qconsf.com/dl/qcon-sanfran-2011/slides/MichaelSnoyman_YesodAFunctionalTypeSafeWebFramework.pdf>
                 Michael Snoyman, Yesod Web Framework, QCon San Francisco 2011
+            <li>
+              <a href=https://raw.github.com/yesodweb/yesod/master/yesod-routes/Yesod/Routes/Dispatch.lhs">Yesod.Routes.Dispatch
+              \: literate Haskell file explaining Yesods dispatching mechanism
             <li>
               My blog post about #
               <a href=https://github.com/JanAhrens/blog/blob/master/2012-07-05_yesod-deployment.markdown>Deploying Yesod to Heroku
