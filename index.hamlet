@@ -159,7 +159,7 @@ $doctype 5
         <ul>
           <li>
             <h3>Family of domain specific languages
-            <p>Hamlet, Casius, Lucius and Julius
+            <p>Hamlet, Cassius, Lucius and Julius
           <li>
             <h3>Type-safe templating for HTML, CSS and JavaScript
             <p>Syntax check, type-safe routes
@@ -178,7 +178,7 @@ $doctype 5
 
       <section.slide>
         <h2 style="margin-bottom:10px;">The other DSLs
-        <h5>CSS with <strong>Casius</strong>
+        <h5>CSS with <strong>Cassius</strong>
         <textarea.code mode=css>#{cassiusDemo}
         <h5><strong>Lucius</strong>: alternative CSS syntax
         <textarea.code mode=css>#{luciusDemo}
