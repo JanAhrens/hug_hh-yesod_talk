@@ -41,8 +41,8 @@ $doctype 5
   <body.deck-container>
       <section.slide>
         <h2 style="text-align:center;">Yesod Web Framework
-        <img src="images/logo-home2-no-esod.png">
-        <p style="margin-top:35%;">
+        <img src="images/logo-home2-no-esod.png" style="margin-top:15%;">
+        <p style="margin-top:20%;">
           2012-07-12<br />
           <strong>Haskell User Group Hamburg</strong><br />
           Jan Ahrens
@@ -184,6 +184,10 @@ $doctype 5
         <textarea.code mode=css>#{luciusDemo}
         <h5><strong>Julius</strong> for JavaScript
         <textarea.code mode=javascript>#{juliusDemo}
+
+      <section.slide>
+        <h2>What happens if hamlet fails
+        <h4.demo>Demo
 
       <section.slide>
         <h2>Input with yesod-form
