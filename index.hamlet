@@ -57,9 +57,9 @@ $doctype 5
           <li>
             <h3>Forms: How to handle input.
           <li>
-            <h3>Let it fly: Deploy your app
+            <h3>Let it fly: Deploy your app.
           <li>
-            <h3>Conclusion
+            <h3>Conclusion.
 
       <section.slide #notPart>
         <h2>What's <em>not</em> part of this talk
@@ -186,7 +186,7 @@ $doctype 5
         <textarea.code mode=javascript>#{juliusDemo}
 
       <section.slide>
-        <h2>What happens if hamlet fails
+        <h2>What happens when hamlet compilation fails
         <h4.demo>Demo
 
       <section.slide>
@@ -199,7 +199,7 @@ $doctype 5
               <li><h4>Get and validate from data</h4>
               <li><h4>Display errors</h4>
           <li>
-            <h3>Encourages the <a href="http://en.wikipedia.org/wiki/Post/Redirect/Get">Post/Redirect/Get (PRG)</a> pattern
+            <h5>Yesod: Encourages the <a href="http://en.wikipedia.org/wiki/Post/Redirect/Get">Post/Redirect/Get (PRG)</a> pattern
 
       <section.slide>
         <h2>Taking notes
@@ -264,7 +264,7 @@ $doctype 5
           <li>
             <h3>Large, dynamic linked binary gets created
             <ul>
-              <li>The binary for the Yesod scaffold site is <strong>48 Megabits</strong> large
+              <li>The binary for the Yesod scaffold site is <strong>48 MB</strong> large
               <li>Hamlet, Lucius, Cassius and Julius templates are part of binary.
               <li>Configurations can be adjusted with YAML configuration.
 
